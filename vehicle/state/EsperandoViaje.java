@@ -1,6 +1,6 @@
-package vehicle.status;
+package vehicle.state;
 
-public class EsperandoVIaje implements EstadoVehiculo{
+public class EsperandoViaje implements EstadoVehiculo{
     private int tiempoEspera;
 
     @Override
@@ -19,7 +19,7 @@ public class EsperandoVIaje implements EstadoVehiculo{
     }
 
     @Override
-    public void recargarCombustible() {
+    public void alertaCombustible() {
 
     }
 

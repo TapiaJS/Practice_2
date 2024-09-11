@@ -1,7 +1,7 @@
-package vehicle.status;
+package vehicle.state;
 
-public class EnMovimiento implements EstadoVehiculo{
-    private int velocidadActual;
+public class Finalizado implements EstadoVehiculo{
+    private int duracionViaje;
 
     @Override
     public void esperarViaje() {
@@ -19,7 +19,7 @@ public class EnMovimiento implements EstadoVehiculo{
     }
 
     @Override
-    public void recargarCombustible() {
+    public void alertaCombustible() {
 
     }
 }
