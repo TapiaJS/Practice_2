@@ -9,10 +9,6 @@ public class Autobus extends Vehiculo {
         super(TIPOCOMBUSTIBLE);
     }
 
-    public void asignarAsientos(){
-
-    }
-
     @Override
     public void seguirRuta() {
 
@@ -21,5 +17,11 @@ public class Autobus extends Vehiculo {
     @Override
     public void recargarCombustible() {
 
+    }
+
+    public boolean personalizarVehiculo(String error){
+        String mensaje = "¿Desea agregar modificaciones al autobus?\n1. Si\n2. No";
+        int decision = getInt(mensaje, error, 1,2);
+        return decision == 1;
     }
 }
