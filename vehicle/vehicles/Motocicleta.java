@@ -14,6 +14,11 @@ public class Motocicleta extends Vehiculo {
     }
 
     @Override
+    public String getTipoVehiculo() {
+        return "Motocicleta";
+    }
+
+    @Override
     public void seguirRuta() {
 
     }
@@ -27,5 +32,9 @@ public class Motocicleta extends Vehiculo {
         String mensaje = "¿Desea agregar modificaciones a la motocicleta?\n1. Si\n2. No";
         int decision = getInt(mensaje, 1,2);
         return decision == 1;
+    }
+
+    private int getInt(String mensaje, int i, int i1) {
+        return 0;
     }
 }

@@ -4,6 +4,8 @@ import vehicle.Vehiculo;
 
 import java.util.Random;
 
+import static java.lang.reflect.Array.getInt;
+
 public class Carro extends Vehiculo {
     private int capacidadPasajeros;
 
@@ -44,6 +46,10 @@ public class Carro extends Vehiculo {
         String mensaje = "¿Desea agregar modificaciones al carro?\n1. Si\n2. No";
         int decision = getInt(mensaje, 1,2);
         return decision == 1;
+    }
+
+    private int getInt(String mensaje, int i, int i1) {
+        return 0;
     }
 
     @Override

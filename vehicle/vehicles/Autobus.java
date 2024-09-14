@@ -47,4 +47,8 @@ public class Autobus extends Vehiculo {
     public String getTipoVehiculo() {
         return "autobus";
     }
+
+    private int getInt(String mensaje, int i, int i1) {
+        return 0;
+    }
 }

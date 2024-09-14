@@ -3,7 +3,7 @@ package vehicle.modification;
 import vehicle.Vehiculo;
 
 public abstract class Modificacion extends Vehiculo {
-    protected Vehiculo vehiculoDecorado;
+    public Vehiculo vehiculoDecorado;
 
     public Modificacion(Vehiculo vehiculoDecorado) {
         super(vehiculoDecorado.getTipoVehiculo());
@@ -16,17 +16,18 @@ public abstract class Modificacion extends Vehiculo {
     }
 
     @Override
-    protected void seguirRuta() {
-        vehiculoDecorado.seguirRuta();
+    public void seguirRuta() {
+        this.vehiculoDecorado.seguirRuta();
     }
 
     @Override
-    protected void recargarCombustible() {
-        vehiculoDecorado.recargarCombustible();
+    public void recargarCombustible() {
+        this.vehiculoDecorado.recargarCombustible();
     }
 
     @Override
     public String getTipoVehiculo() {
         return vehiculoDecorado.getTipoVehiculo();
     }
+
 }

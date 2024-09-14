@@ -1,80 +1,112 @@
 import vehicle.Vehiculo;
 import vehicle.vehicles.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-public class SimuladorVehMos{
+public class SimuladorVehMos {
     private static final ArrayList<String> TIPOVEHICULOS = new ArrayList<>();
 
     private static String menuVehiculosDisponibles(){
-        StringBuilder menu = new StringBuilder();
-        cargarVehiculosDisponibles();
+        cargarVehiculosDisponibles(); 
 
+        StringBuilder menu = new StringBuilder();
         menu.append("Opciones a elegir:\n");
-        int i = 0;
+        int i = 1;
         for (String vehiculo : TIPOVEHICULOS) {
+            menu.append(i).append(". ").append(vehiculo).append("\n");
             i++;
-            menu.append(i + ". " + vehiculo + "\n");
         }
 
         return menu.toString();
     }
 
     private static void cargarVehiculosDisponibles(){
-        TIPOVEHICULOS.add("Carro");
-        TIPOVEHICULOS.add("Autobus");
-        TIPOVEHICULOS.add("Motocicleta");
-        TIPOVEHICULOS.add("Scooter");
-        TIPOVEHICULOS.add("Vehículo4X4");
-        Collections.sort(TIPOVEHICULOS);
+        if (TIPOVEHICULOS.isEmpty()) {
+            TIPOVEHICULOS.add("Carro");
+            TIPOVEHICULOS.add("Autobus");
+            TIPOVEHICULOS.add("Motocicleta");
+            TIPOVEHICULOS.add("Scooter");
+            TIPOVEHICULOS.add("Vehículo4X4");
+            Collections.sort(TIPOVEHICULOS);
+        }
     }
 
+    public static int getInt(String mensaje, int min, int max) {
+        Scanner m = new Scanner(System.in);
+        int valor;
+        String error = "Por favor ingresa una opción válida.";
+    
+        while (true) {
+            System.out.println(mensaje);
+            if (m.hasNextInt()) {
+                valor = m.nextInt();
+    
+                if (valor < min || max < valor) {
+                    System.out.println(error);
+                } else {
+                    return valor;
+                }
+            } else {
+                m.next();
+                System.out.println(error);
+            }
+        }
+    }
 
     public static void main(String[] args) {
+        VerificacionID verificacionID = new VerificacionID();
+        Scanner scanner = new Scanner(System.in);
+        String idCliente;
 
+        System.out.println("Bienvenido al simulador VehMos.");
+        do {
+            System.out.print("Por favor, ingresa tu ID de cliente: ");
+            idCliente = scanner.nextLine();
+        } while (!verificacionID.verificar(idCliente));
+
+        Vehiculo vehiculoSeleccionado = solicitarVehiculo();
+        if (vehiculoSeleccionado == null) {
+            System.out.println("No se seleccionó un vehículo válido. Terminando el programa.");
+            return;
+        }
+
+        if (vehiculoSeleccionado.personalizarVehiculo()) {
+            System.out.println("Personalización del vehículo completada.");
+        } else {
+            System.out.println("No se realizaron personalizaciones.");
+        }
+
+        vehiculoSeleccionado.solicitarVehiculo();
+
+        System.out.println("Seleccione su destino:");
+        String destinoNombre = scanner.nextLine();
+        vehiculoSeleccionado.seleccionarDestino(destinoNombre);
+        System.out.println("Destino seleccionado: " + vehiculoSeleccionado.getDestino());
+
+        System.out.println("Iniciando viaje...");
+        vehiculoSeleccionado.comenzarViaje();
+
+        vehiculoSeleccionado.finalizarViaje();
+        System.out.println("Viaje finalizado.");
+    }
+
+    public static Vehiculo solicitarVehiculo() {
+        int opcion = getInt(menuVehiculosDisponibles(), 1, TIPOVEHICULOS.size());
+
+        switch (opcion) {
+            case 1:
+                return new Carro("Gasolina");
+            case 2:
+                return new Autobus("Diesel");
+            case 3:
+                return new Motocicleta("Gasolina");
+            case 4:
+                return new Scooter("Energía AC");
+            case 5:
+                return new Vehiculo4x4("Diesel");
+            default:
+                return null;
+        }
     }
 }
-//public Vehiculo solicitarVehiculo() {
-//    int opcion = getInt(menuVehiculosDisponibles(), ERROR, 1, TIPOVEHICULOS.size());
-//
-//    switch (opcion){
-//        case 1:
-//            Vehiculo autobus = new Autobus("Diesel");
-//            if (autobus.personalizarVehiculo(ERROR)){
-//                System.out.println("prueba autobus");
-//            }
-//            autobus.encender();
-//            return autobus;
-//        case 2:
-//            Vehiculo carro = new Carro("Gasolina");
-//            if (carro.personalizarVehiculo(ERROR)){
-//                System.out.println("prueba carro");
-//            }
-//            carro.encender();
-//            return carro;
-//        case 3:
-//            Vehiculo motocicleta = new Motocicleta("Gasolina");
-//            if (motocicleta.personalizarVehiculo(ERROR)){
-//                System.out.println("prueba motocicleta");
-//            }
-//            motocicleta.encender();
-//            return motocicleta;
-//        case 4:
-//            Vehiculo scooter = new Scooter("Energía AC");
-//            if (scooter.personalizarVehiculo(ERROR)){
-//                System.out.println("prueba scooter");
-//            }
-//            scooter.encender();
-//            return scooter;
-//        case 5:
-//            Vehiculo vehiculo4x4 = new Vehiculo4x4("Diesel");
-//            if (vehiculo4x4.personalizarVehiculo(ERROR)){
-//                System.out.println("prueba vehículo4x4");
-//            }
-//            vehiculo4x4.encender();
-//            return vehiculo4x4;
-//    }
-//    return null;
-//}

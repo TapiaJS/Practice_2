@@ -9,6 +9,11 @@ public class Scooter extends Vehiculo {
         super(TIPOCOMBUSTIBLE);
     }
 
+    @Override
+    public String getTipoVehiculo() {
+        return "Scooter";
+    }
+
     public void recargarBateria(){
 
     }
@@ -21,5 +26,9 @@ public class Scooter extends Vehiculo {
     @Override
     public void recargarCombustible() {
 
+    }
+
+    private int getInt(String mensaje, int i, int i1) {
+        return 0;
     }
 }
