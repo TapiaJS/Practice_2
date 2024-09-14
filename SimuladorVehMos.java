@@ -1,10 +1,38 @@
 import vehicle.Vehiculo;
 import vehicle.vehicles.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
 public class SimuladorVehMos{
+    private static final ArrayList<String> TIPOVEHICULOS = new ArrayList<>();
+
+    private static String menuVehiculosDisponibles(){
+        StringBuilder menu = new StringBuilder();
+        cargarVehiculosDisponibles();
+
+        menu.append("Opciones a elegir:\n");
+        int i = 0;
+        for (String vehiculo : TIPOVEHICULOS) {
+            i++;
+            menu.append(i + ". " + vehiculo + "\n");
+        }
+
+        return menu.toString();
+    }
+
+    private static void cargarVehiculosDisponibles(){
+        TIPOVEHICULOS.add("Carro");
+        TIPOVEHICULOS.add("Autobus");
+        TIPOVEHICULOS.add("Motocicleta");
+        TIPOVEHICULOS.add("Scooter");
+        TIPOVEHICULOS.add("Vehículo4X4");
+        Collections.sort(TIPOVEHICULOS);
+    }
+
+
     public static void main(String[] args) {
-//        Vehiculo prueba = new Carro("Gasolina");
-//        prueba.solicitarVehiculo();
 
     }
 }

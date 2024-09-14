@@ -23,9 +23,9 @@ public class Motocicleta extends Vehiculo {
 
     }
 
-    public boolean personalizarVehiculo(String error){
+    public boolean personalizarVehiculo(){
         String mensaje = "¿Desea agregar modificaciones a la motocicleta?\n1. Si\n2. No";
-        int decision = getInt(mensaje, error, 1,2);
+        int decision = getInt(mensaje, 1,2);
         return decision == 1;
     }
 }

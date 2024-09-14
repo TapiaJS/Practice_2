@@ -27,9 +27,9 @@ public class Vehiculo4x4 extends Vehiculo {
 
     }
 
-    public boolean personalizarVehiculo(String error){
+    public boolean personalizarVehiculo(){
         String mensaje = "¿Desea agregar modificaciones al vehículo4x4?\n1. Si\n2. No";
-        int decision = getInt(mensaje, error, 1,2);
+        int decision = getInt(mensaje, 1,2);
         return decision == 1;
     }
 }

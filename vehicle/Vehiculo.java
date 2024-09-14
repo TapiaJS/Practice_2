@@ -4,20 +4,14 @@ import colors.Colors;
 import vehicle.state.EsperandoViaje;
 import vehicle.state.EstadoVehiculo;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public abstract class Vehiculo extends Destino{
     private final String TIPOCOMBUSTIBLE;
-    private double porcentajeCombustible;
-    private EstadoVehiculo estadoActual;
+    protected double porcentajeCombustible;
+    protected EstadoVehiculo estadoActual;
 
     private boolean vehiculoEncendido = false;
-    private static final ArrayList<String> TIPOVEHICULOS = new ArrayList<>();
-    private static final String ERROR = "Por favor ingresa una opción válida.";
-
-    private static Scanner m = new Scanner(System.in);
 
     public Vehiculo(String TIPOCOMBUSTIBLE){
         this.TIPOCOMBUSTIBLE = TIPOCOMBUSTIBLE;
@@ -25,18 +19,37 @@ public abstract class Vehiculo extends Destino{
         this.estadoActual = new EsperandoViaje();
     }
 
+    public double getPorcentajeCombustible(){
+        return this.porcentajeCombustible;
+    }
+
+    public void setPorcentajeCombustible(double añadirCombustible){
+        this.porcentajeCombustible += añadirCombustible;
+    }
+
     public void setEstado(EstadoVehiculo nuevoEstado) {
         this.estadoActual = nuevoEstado;
     }
 
     public void solicitarVehiculo(){
-        encender();
-        if (personalizarVehiculo(ERROR)){
+        esperarViaje();
+        if (personalizarVehiculo()){
             //agregar los métodos necesarios para personalizar el vehículo
         }
+        encender();
         comenzarViaje();
         seguirRuta();
-        apagar(true);
+        finalizarViaje();
+        apagar();
+    }
+
+    public void esperarViaje() {
+        recargarCombustible();
+        estadoActual.esperarViaje(this);
+    }
+
+    public boolean personalizarVehiculo(){
+        return false;
     }
 
     private void encender() {
@@ -44,64 +57,34 @@ public abstract class Vehiculo extends Destino{
         System.out.println("El vehículo ha sido encendido.");
     }
 
-    public boolean personalizarVehiculo(String error){
-        return false;
-    }
-
-    private void apagar(boolean viajeExitoso){
-        if (vehiculoEncendido && viajeExitoso){
-            vehiculoEncendido = false;
-            System.out.println("El vehículo ha sido apagado.");
-        } else {
-            System.out.println("El vehículo ya estaba apagado");
-        }
-    }
-
-    public void esperarViaje() {
-        estadoActual.esperarViaje(this);
-    }
-
     public void comenzarViaje() {
         estadoActual.comenzarViaje(this);
     }
 
-    public void alertaCombustible() {
-        estadoActual.alertaCombustible(this);
-    }
+    //Puede que lo mejor sea que cada vehículo herede de destino y no la plantilla
+    protected abstract void seguirRuta();
 
     public void finalizarViaje() {
         estadoActual.finalizarViaje(this);
     }
 
-    public abstract void seguirRuta();
-
-    public abstract void recargarCombustible();
-
-    private static String menuVehiculosDisponibles(){
-        StringBuilder menu = new StringBuilder();
-        cargarVehiculosDisponibles();
-
-        menu.append("Opciones a elegir:\n");
-        int i = 0;
-        for (String vehiculo : TIPOVEHICULOS) {
-            i++;
-            menu.append(i + ". " + vehiculo + "\n");
-        }
-
-        return menu.toString();
+    private void apagar(){
+        this.vehiculoEncendido = false;
+        System.out.println("El vehículo ha sido apagado.");
     }
 
-    private static void cargarVehiculosDisponibles(){
-        TIPOVEHICULOS.add("Carro");
-        TIPOVEHICULOS.add("Autobus");
-        TIPOVEHICULOS.add("Motocicleta");
-        TIPOVEHICULOS.add("Scooter");
-        TIPOVEHICULOS.add("Vehículo4X4");
-        Collections.sort(TIPOVEHICULOS);
+    public boolean alertaCombustible() {
+        return estadoActual.alertaCombustible(this);
     }
 
-    public static int getInt(String mensaje, String error, int min, int max) {
+    protected abstract void recargarCombustible();
+
+    public abstract String getTipoVehiculo();
+
+    public static int getInt(String mensaje, int min, int max) {
+        Scanner m = new Scanner(System.in);
         int valor;
+        String error = "Por favor ingresa una opción válida.";
 
         while (true) {
             Colors.println(mensaje, Colors.HIGH_INTENSITY);

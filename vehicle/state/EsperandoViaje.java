@@ -11,7 +11,7 @@ public class EsperandoViaje implements EstadoVehiculo {
 
     @Override
     public void comenzarViaje(Vehiculo vehiculo) {
-        System.out.println("El viaje ha comenzado. Vehículo moviéndose.");
+        System.out.println("El viaje ha comenzado. Vehículo en movimiento.");
         vehiculo.setEstado(new EnMovimiento());
     }
 
