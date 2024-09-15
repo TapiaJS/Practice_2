@@ -5,43 +5,61 @@ import vehicle.Vehiculo;
 import java.util.Random;
 
 public class Carro extends Vehiculo {
-    private int capacidadPasajeros;
+    private Random random = new Random();
 
     public Carro(String TIPOCOMBUSTIBLE) {
         super(TIPOCOMBUSTIBLE);
     }
 
     @Override
-    public void seguirRuta() {
+    public boolean seguirRuta(String destino) {
+        String[] rutas = {"autopista", "camino rural", "ciudad"};
 
+        // Simular selección aleatoria de la ruta
+        String rutaSeleccionada = rutas[random.nextInt(rutas.length)];
+        System.out.println("El " + getTipoVehiculo() + " ha comenzado su viaje por la " + rutaSeleccionada + "(Menos Tráfico-Mejor Opción)");
+
+        // Calcular la disminución de combustible según la ruta
+        double velocidad;
+        switch (rutaSeleccionada) {
+            case "autopista":
+                velocidad = calcularVelocidad(80, 120);
+                System.out.println("El " + getTipoVehiculo() + " está tomando la autopista. Menor consumo de combustible.");
+                break;
+            case "camino rural":
+                velocidad = calcularVelocidad(40, 60);
+                System.out.println("El " + getTipoVehiculo() + " está tomando un camino rural. Consumo de combustible moderado.");
+                break;
+            case "ciudad":
+                velocidad = calcularVelocidad(10, 30);
+                System.out.println("El " + getTipoVehiculo() + " está circulando por la ciudad. Mayor consumo de combustible.");
+                break;
+            default:
+                velocidad = 0;
+        }
+        return rutaPersonalizada(destino,this, velocidad, rutaSeleccionada);
     }
 
     //Pueden tanto llenar el tanque por completo o mínimo la mitad del porciento que le falta el tanque por estar lleno
     @Override
     public void recargarCombustible() {
-        if (estadoActual.alertaCombustible(this)){
-            System.out.println("Porcentaje de gasolina: " + getPorcentajeCombustible());
+        System.out.println("Porcentaje de " + getTIPOCOMBUSTIBLE() + ": " + getPorcentajeCombustible());
 
-            double porcentajeMaximaCombustible = 100.0 - getPorcentajeCombustible();
-            System.out.println("Cargando gasolina");
-            setPorcentajeCombustible(generarNumeroAleatorio(porcentajeMaximaCombustible));
+        System.out.println("Cargando " + getTIPOCOMBUSTIBLE());
+        setPorcentajeCombustible(generarNumeroAleatorio(100.0 - getPorcentajeCombustible()));
 
-            System.out.println("Cantidad de gasolina en el tanque: " + getPorcentajeCombustible());
-        }
+        System.out.println("Cantidad de " + getTIPOCOMBUSTIBLE() + " en el tanque: " + getPorcentajeCombustible());
     }
 
     // Método genérico para generar un número aleatorio mayor a la mitad y menor que el máximo
-    private static double generarNumeroAleatorio(double maximo) {
-
+    private double generarNumeroAleatorio(double maximo) {
         double mitad = maximo / 2;
-
         // Genera número en el rango mayor a la mitad y menor que el valor máximo
-        Random random = new Random();
         return random.nextDouble(maximo - mitad) + mitad + 1;
     }
 
     public boolean personalizarVehiculo(){
-        String mensaje = "¿Desea agregar modificaciones al carro?\n1. Si\n2. No";
+        String mensaje = "¿Desea agregar modificaciones al " + getTipoVehiculo() + "?\n1. Si\n2. No";
         int decision = getInt(mensaje, 1,2);
         return decision == 1;
     }

@@ -6,18 +6,23 @@ public class EsperandoViaje implements EstadoVehiculo {
 
     @Override
     public void esperarViaje(Vehiculo vehiculo) {
-        System.out.println("El vehículo ya está esperando un viaje.");
+        System.out.println("El " + vehiculo.getTipoVehiculo() + " ya está esperando un viaje.");
     }
 
     @Override
     public void comenzarViaje(Vehiculo vehiculo) {
-        System.out.println("El viaje ha comenzado. Vehículo en movimiento.");
+        vehiculo.setPuertasAbiertas(false);
+        System.out.println("El viaje ha comenzado. " + vehiculo.getTipoVehiculo() + " en movimiento. (puertas cerradas)");
         vehiculo.setEstado(new EnMovimiento());
     }
 
     @Override
-    public void alertaCombustible(Vehiculo vehiculo) {
-        System.out.println("¡Alerta de combustible mientras espera!");
+    public boolean alertaCombustible(Vehiculo vehiculo) {
+        if (vehiculo.getPorcentajeCombustible() < 30){
+            System.out.println("¡Alerta de combustible! (en espera)");
+            return true;
+        }
+        return false;
     }
 
     @Override

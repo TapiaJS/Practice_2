@@ -11,7 +11,7 @@ public abstract class Vehiculo extends Destino{
     protected double porcentajeCombustible;
     protected EstadoVehiculo estadoActual;
 
-    private boolean vehiculoEncendido = false;
+    protected boolean puertasAbiertas;
 
     public Vehiculo(String TIPOCOMBUSTIBLE){
         this.TIPOCOMBUSTIBLE = TIPOCOMBUSTIBLE;
@@ -19,69 +19,102 @@ public abstract class Vehiculo extends Destino{
         this.estadoActual = new EsperandoViaje();
     }
 
+    public String getTIPOCOMBUSTIBLE(){
+        return this.TIPOCOMBUSTIBLE;
+    }
+
     public double getPorcentajeCombustible(){
         return this.porcentajeCombustible;
     }
 
-    public void setPorcentajeCombustible(double añadirCombustible){
-        this.porcentajeCombustible += añadirCombustible;
+    public void setPorcentajeCombustible(double agregarCombustible){
+        this.porcentajeCombustible += agregarCombustible;
+        if (porcentajeCombustible > 100){
+            this.porcentajeCombustible = 100;
+        }
+        if (estadoActual.alertaCombustible(this)){
+            System.out.println("Es necesario desviarse de la ruta por un momento.");
+            recargarCombustible();
+        }
     }
 
     public void setEstado(EstadoVehiculo nuevoEstado) {
         this.estadoActual = nuevoEstado;
     }
 
-    public void solicitarVehiculo(){
-        esperarViaje();
-        if (personalizarVehiculo()){
-            //agregar los métodos necesarios para personalizar el vehículo
-        }
-        encender();
-        comenzarViaje();
-        seguirRuta();
-        finalizarViaje();
-        apagar();
+    public void setPuertasAbiertas(boolean estado){
+        this.puertasAbiertas = estado;
     }
 
-    public void esperarViaje() {
-        recargarCombustible();
+    public void solicitarVehiculo(){
+        esperarViaje();
+        if (personalizarVehiculo()) {
+            //Agregar lógica
+            System.out.println("El vehículo ha sido personalizado.");
+        }
+        encender();
+        String destino = comenzarViaje();
+        Boolean viajeExitoso = seguirRuta(destino);
+        if (viajeExitoso){
+            finalizarViaje();
+            apagar();
+        }
+    }
+
+    private void esperarViaje() {
+        if (estadoActual.alertaCombustible(this)){
+            recargarCombustible();
+        }
         estadoActual.esperarViaje(this);
     }
 
-    public boolean personalizarVehiculo(){
+    private boolean personalizarVehiculo(){
         return false;
     }
 
     private void encender() {
-        this.vehiculoEncendido = true;
+        this.puertasAbiertas = true;
         System.out.println("El vehículo ha sido encendido.");
     }
 
-    public void comenzarViaje() {
+    private String comenzarViaje() {
         estadoActual.comenzarViaje(this);
+        estadoActual.comenzarViaje(this);
+        return seleccionarDestino();
     }
 
     //Puede que lo mejor sea que cada vehículo herede de destino y no la plantilla
-    protected abstract void seguirRuta();
+    public abstract boolean seguirRuta(String destino);
 
-    public void finalizarViaje() {
+    private void finalizarViaje() {
         estadoActual.finalizarViaje(this);
+        estadoActual.finalizarViaje(this);
+
+        if (this.puertasAbiertas){
+            System.out.println("El usuario sale del " + getTipoVehiculo());
+            estadoActual.esperarViaje(this);
+        }
+
+        if (estadoActual.alertaCombustible(this)){
+            recargarCombustible();
+        }
     }
 
     private void apagar(){
-        this.vehiculoEncendido = false;
         System.out.println("El vehículo ha sido apagado.");
+        this.puertasAbiertas = false;
     }
 
-    public boolean alertaCombustible() {
-        return estadoActual.alertaCombustible(this);
-    }
-
-    protected abstract void recargarCombustible();
+    public abstract void recargarCombustible();
 
     public abstract String getTipoVehiculo();
 
-    public static int getInt(String mensaje, int min, int max) {
+    // Método para calcular la velocidad dentro de un intervalo
+    protected double calcularVelocidad(int minimo, int maximo) {
+        return minimo + (Math.random() * (maximo - minimo));
+    }
+
+    protected static int getInt(String mensaje, int min, int max) {
         Scanner m = new Scanner(System.in);
         int valor;
         String error = "Por favor ingresa una opción válida.";
