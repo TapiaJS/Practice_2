@@ -38,9 +38,9 @@ public class SimuladorVehMos {
 
         switch (opcion) {
             case 1:
-                return new Carro("Gasolina");
+                return new Autobus("Gasolina");
             case 2:
-                return new Autobus("Diesel");
+                return new Carro("Diesel");
             case 3:
                 return new Motocicleta("Gasolina");
             case 4:
@@ -76,7 +76,7 @@ public class SimuladorVehMos {
 
     public static void main(String[] args) {
         // Mensaje de bienvenida
-        Colors.println("¡Bienvenido al Simulador de Vehículos!", Colors.GREEN + Colors.HIGH_INTENSITY);
+        Colors.println("¡Bienvenido al Simulador de la compañia VehMos!", Colors.GREEN + Colors.HIGH_INTENSITY);
 
         // Solicitar vehículo al usuario
         Vehiculo vehiculoSeleccionado = solicitarVehiculo();

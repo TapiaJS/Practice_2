@@ -13,7 +13,7 @@ public class Scooter extends Vehiculo {
         String rutaSeleccionada = "ciudad";
         System.out.println("El " + getTipoVehiculo() + " ha comenzado su viaje por la " + rutaSeleccionada + "(Única ruta)");
 
-        double velocidad = calcularVelocidad(30, 50);
+        double velocidad = calcularVelocidad(10, 20);
         System.out.println("El " + getTipoVehiculo() + " está circulando por la ciudad. Consumo moderado de combustible.");
 
         return rutaPersonalizada(destino,this, velocidad, rutaSeleccionada);

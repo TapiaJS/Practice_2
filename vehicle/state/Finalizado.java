@@ -5,7 +5,7 @@ import vehicle.Vehiculo;
 public class Finalizado implements EstadoVehiculo{
     @Override
     public void esperarViaje(Vehiculo vehiculo) {
-        System.out.println("El vehículo está esperando un nuevo viaje.");
+        System.out.println("El " + vehiculo.getTipoVehiculo() + " está esperando un nuevo viaje.");
         vehiculo.setEstado(new EsperandoViaje());
     }
 
@@ -25,6 +25,6 @@ public class Finalizado implements EstadoVehiculo{
     @Override
     public void finalizarViaje(Vehiculo vehiculo) {
         vehiculo.setPuertasAbiertas(true);
-        System.out.println("El viaje ya ha sido finalizado. (puertas abiertas)");
+        System.out.println("El viaje ha sido finalizado. (puertas abiertas)");
     }
 }

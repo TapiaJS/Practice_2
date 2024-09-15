@@ -6,12 +6,13 @@ public class EnMovimiento implements EstadoVehiculo{
 
     @Override
     public void esperarViaje(Vehiculo vehiculo) {
-        System.out.println("El vehículo no puede esperar un viaje mientras está en movimiento.");
+        System.out.println("El " + vehiculo.getTipoVehiculo() + " no puede esperar un viaje mientras está en movimiento.");
     }
 
     @Override
     public void comenzarViaje(Vehiculo vehiculo) {
-        System.out.println("El vehículo ya está en movimiento. (puertas cerradas)");
+        vehiculo.setPuertasAbiertas(false);
+        System.out.println("El " + vehiculo.getTipoVehiculo() + " ya está en movimiento. (puertas cerradas)");
     }
 
     @Override
@@ -25,7 +26,7 @@ public class EnMovimiento implements EstadoVehiculo{
 
     @Override
     public void finalizarViaje(Vehiculo vehiculo) {
-        System.out.println("El viaje ha finalizado. Verificando destino...");
+        System.out.println("El viaje esta por finalizar. Verificando destino...");
         vehiculo.setEstado(new Finalizado());
     }
 }

@@ -23,15 +23,15 @@ public class Motocicleta extends Vehiculo {
         double velocidad;
         switch (rutaSeleccionada) {
             case "autopista":
-                velocidad = calcularVelocidad(100, 120);
+                velocidad = calcularVelocidad(70, 100);
                 System.out.println("El " + getTipoVehiculo() + " está tomando la autopista. Menor consumo de combustible.");
                 break;
             case "camino rural":
-                velocidad = calcularVelocidad(50, 60);
+                velocidad = calcularVelocidad(50, 55);
                 System.out.println("El " + getTipoVehiculo() + " está tomando un camino rural. Consumo de combustible moderado.");
                 break;
             case "ciudad":
-                velocidad = calcularVelocidad(60, 80);
+                velocidad = calcularVelocidad(20, 40);
                 System.out.println("El " + getTipoVehiculo() + " está circulando por la ciudad. Mayor consumo de combustible.");
                 break;
             default:

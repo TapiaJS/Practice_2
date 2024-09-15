@@ -6,13 +6,12 @@ public class EsperandoViaje implements EstadoVehiculo {
 
     @Override
     public void esperarViaje(Vehiculo vehiculo) {
-        System.out.println("El " + vehiculo.getTipoVehiculo() + " ya está esperando un viaje.");
+        System.out.println("El " + vehiculo.getTipoVehiculo() + " está esperando un viaje.");
     }
 
     @Override
     public void comenzarViaje(Vehiculo vehiculo) {
-        vehiculo.setPuertasAbiertas(false);
-        System.out.println("El viaje ha comenzado. " + vehiculo.getTipoVehiculo() + " en movimiento. (puertas cerradas)");
+        System.out.println("El viaje ha comenzado. " + vehiculo.getTipoVehiculo() + " en camino. (puertas abiertas)");
         vehiculo.setEstado(new EnMovimiento());
     }
 

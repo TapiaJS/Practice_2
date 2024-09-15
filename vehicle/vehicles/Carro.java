@@ -23,15 +23,15 @@ public class Carro extends Vehiculo {
         double velocidad;
         switch (rutaSeleccionada) {
             case "autopista":
-                velocidad = calcularVelocidad(80, 120);
+                velocidad = calcularVelocidad(80, 90);
                 System.out.println("El " + getTipoVehiculo() + " está tomando la autopista. Menor consumo de combustible.");
                 break;
             case "camino rural":
-                velocidad = calcularVelocidad(40, 60);
+                velocidad = calcularVelocidad(20, 40);
                 System.out.println("El " + getTipoVehiculo() + " está tomando un camino rural. Consumo de combustible moderado.");
                 break;
             case "ciudad":
-                velocidad = calcularVelocidad(10, 30);
+                velocidad = calcularVelocidad(8, 25);
                 System.out.println("El " + getTipoVehiculo() + " está circulando por la ciudad. Mayor consumo de combustible.");
                 break;
             default:
@@ -58,7 +58,8 @@ public class Carro extends Vehiculo {
         return random.nextDouble(maximo - mitad) + mitad + 1;
     }
 
-    public boolean personalizarVehiculo(){
+    @Override
+    protected boolean personalizarVehiculo(){
         String mensaje = "¿Desea agregar modificaciones al " + getTipoVehiculo() + "?\n1. Si\n2. No";
         int decision = getInt(mensaje, 1,2);
         return decision == 1;
@@ -66,6 +67,6 @@ public class Carro extends Vehiculo {
 
     @Override
     public String getTipoVehiculo() {
-        return "carro";
+        return "Carro";
     }
 }

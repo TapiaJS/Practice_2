@@ -1,6 +1,7 @@
 package vehicle;
 
 import colors.Colors;
+import vehicle.modification.modifications.*;
 import vehicle.state.EsperandoViaje;
 import vehicle.state.EstadoVehiculo;
 
@@ -10,6 +11,7 @@ public abstract class Vehiculo extends Destino{
     private final String TIPOCOMBUSTIBLE;
     protected double porcentajeCombustible;
     protected EstadoVehiculo estadoActual;
+    protected Vehiculo vehiculoDecorado;  // Campo para el vehículo decorado
 
     protected boolean puertasAbiertas;
 
@@ -49,8 +51,8 @@ public abstract class Vehiculo extends Destino{
     public void solicitarVehiculo(){
         esperarViaje();
         if (personalizarVehiculo()) {
-            //Agregar lógica
-            System.out.println("El vehículo ha sido personalizado.");
+            agregarModificaciones();
+            System.out.println("El " + getTipoVehiculo() + " ha sido personalizado.");
         }
         encender();
         String destino = comenzarViaje();
@@ -68,17 +70,57 @@ public abstract class Vehiculo extends Destino{
         estadoActual.esperarViaje(this);
     }
 
-    private boolean personalizarVehiculo(){
+    protected boolean personalizarVehiculo(){
         return false;
+    }
+
+    private void agregarModificaciones() {
+        Vehiculo vehiculoDecorado = this; // El vehículo actual se usará para aplicar decoradores
+
+        int decoracion = getInt("Seleccione una modificación:\n" +
+                "1. Faros de Niebla\n" +
+                "2. Llantas Todo Terreno\n" +
+                "3. Radio\n" +
+                "4. Spoiler\n" +
+                "5. Turbo\n" +
+                "6. Vidrios Polarizados", 1, 6);
+
+        switch (decoracion) {
+            case 1:
+                int potenciaLuz = getInt("Ingrese la potencia de luz para los faros de niebla (lúmenes): ", 100, 10000);
+                vehiculoDecorado = new FarosDeNiebla(vehiculoDecorado, potenciaLuz);
+                break;
+            case 2:
+                int resistenciaLlantas = getInt("Ingrese la resistencia de las llantas todo terreno: ", 1, 100);
+                vehiculoDecorado = new LlantasTodoTerreno(vehiculoDecorado, resistenciaLlantas);
+                break;
+            case 3:
+                String frecuenciaRadio = getString("Ingrese la frecuencia de la radio: ");
+                vehiculoDecorado = new RadioModificacion(vehiculoDecorado, frecuenciaRadio);
+                break;
+            case 4:
+                String tipoSpoiler = getString("Ingrese el tipo de spoiler: ");
+                vehiculoDecorado = new Spoiler(vehiculoDecorado, tipoSpoiler);
+                break;
+            case 5:
+                vehiculoDecorado = new Turbo(vehiculoDecorado);
+                break;
+            case 6:
+                int nivelPolarizado = getInt("Ingrese el nivel de polarización de los vidrios: ", 0, 100);
+                vehiculoDecorado = new VidriosPolarizados(vehiculoDecorado, nivelPolarizado);
+                break;
+        }
+        this.vehiculoDecorado = vehiculoDecorado;
     }
 
     private void encender() {
         this.puertasAbiertas = true;
-        System.out.println("El vehículo ha sido encendido.");
+        System.out.println("El " + getTipoVehiculo() + " ha sido encendido.");
     }
 
     private String comenzarViaje() {
         estadoActual.comenzarViaje(this);
+        System.out.println("*El usuario entra*");
         estadoActual.comenzarViaje(this);
         return seleccionarDestino();
     }
@@ -91,7 +133,7 @@ public abstract class Vehiculo extends Destino{
         estadoActual.finalizarViaje(this);
 
         if (this.puertasAbiertas){
-            System.out.println("El usuario sale del " + getTipoVehiculo());
+            System.out.println("*El usuario sale del " + getTipoVehiculo() + "*");
             estadoActual.esperarViaje(this);
         }
 
@@ -101,7 +143,7 @@ public abstract class Vehiculo extends Destino{
     }
 
     private void apagar(){
-        System.out.println("El vehículo ha sido apagado.");
+        System.out.println("El " + getTipoVehiculo() + " ha sido apagado.");
         this.puertasAbiertas = false;
     }
 
@@ -134,5 +176,11 @@ public abstract class Vehiculo extends Destino{
                 Colors.println(error, Colors.RED + Colors.HIGH_INTENSITY);
             }
         }
+    }
+
+    private static String getString(String mensaje) {
+        Scanner m = new Scanner(System.in);
+        Colors.println(mensaje, Colors.HIGH_INTENSITY);
+        return m.nextLine();
     }
 }

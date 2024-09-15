@@ -25,6 +25,7 @@ public class Destino {
 
     private static final double[] ZOCALO = {19.4326, -99.1332};
 
+    //La velocidad representa km/h
     protected boolean rutaPersonalizada(String destino, Vehiculo vehiculo, double velocidad, String ruta){
         boolean viajeExitoso = false;
         double[] coordenadasDestino = puntosInteres.get(destino);
@@ -39,10 +40,13 @@ public class Destino {
             double consumoCombustible = distancia * 0.1; // Ejemplo: 0.1% por kilómetro
             while (distancia > 0) {
                 // Disminuir distancia y combustible conforme se avanza
-                distancia -= 10; // Suponiendo 10 km por iteración
+                distancia -= 1; // Suponiendo 1 km por iteración
                 vehiculo.setPorcentajeCombustible(-consumoCombustible);
+                if (distancia < 0){
+                    distancia = 0;
+                }
                 System.out.println("Quedan " + distancia + " km. Combustible restante: " +
-                        vehiculo.getPorcentajeCombustible() + "%" + vehiculo.getTIPOCOMBUSTIBLE());
+                        vehiculo.getPorcentajeCombustible() + "% " + vehiculo.getTIPOCOMBUSTIBLE());
             }
             System.out.println("El " + vehiculo.getTipoVehiculo() + " ha llegado a " + destino + ".");
             viajeExitoso = true;
